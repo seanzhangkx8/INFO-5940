@@ -3,7 +3,8 @@ This repo is for INFO5940 HW1, by Sean Zhang (kz88)
 
 ## Setup Instruction
 
-1. The provided poetry.lock does not work as intended, so we need to re-build the poetry.lock manully sometimes.
+The provided poetry.lock does not work as intended, 
+plus I added PyPDF2 as dependency package for handling PDFs so we need to re-build the poetry.lock manully sometimes.
 
 ```
 rm poetry.lock
@@ -16,8 +17,59 @@ build the container again:
 docker-compose up --build
 ```
 
+To run the system, just run 
 
+```
+streamlit run chat_with_pdf.py
+```
 
+and in the chat interface, you will be able to upload multiple files in .txt and .pdf format while interacting with the bot.
+
+## Code Structure Explained
+
+So the main user interface lies in chat_with_pdf.py, which handles the stream and uploading files. It also parse the files into text content and store them in the "./data" directory. This main workhouse calls helper functions from util.py to handle the input and extract relevant informations from the uploaded files according to user questions. Because the codes are well documented, I am not going to explain it too much here.
+
+## How each required points is satisfied
+All Requirements (Total 200 points):
+<span style="color:blue">Answers to each requirement in blue text.</span>
+- Utilize the Provided Docker and Devcontainer Setup (10 points)
+    - Description: Use the provided template with Docker ­­and .devcontainer configurations for your application development. Ensure your application runs successfully within this environment.
+    - Deliverables:
+    Any necessary modifications to the Docker or devcontainer configurations should be documented.
+    Instructions in your README.md on how to run the application using the provided setup.
+    - <span style="color:blue">All necessary changes are documented in the sections above, and the setup steps and instructions are included.</span>
+- File Upload Functionality for .txt Files (10 points)
+    - Description: Implement functionality that allows users to upload text files with a .txt extension.
+    - Deliverables:
+    A user interface component that enables file selection and uploading.
+    Backend handling of the uploaded .txt files.
+    - <span style="color:blue">From chat_with_pdf.py, line 10, accepting type .txt. Handles .txt file content extraction, truncating, and searching for relevant information correctly. Can be tested in user interface.</span>
+- Conversational Interface with Document Content (150 points)
+    - Description: Create a chat interface where users can ask questions about the uploaded document(s) and receive relevant answers.
+    - Specifications:
+      - Efficiently handle large documents by chunking them into smaller, manageable pieces.
+      - <span style="color:blue">From chat_with_pdf.py line 35, break down large documents into smaller chunks of sequence length 256 words with 32 words overlap so the context is not lost (check implementation in util.py).  Thus only relevant chunks from the documents is going to be inputted into the context for AI to process. Also, if the relevant text is too long, use GPT to summarize it according to user question. Implementation in util.py, summarize_text().</span>
+      
+      - Ensure the conversational AI provides accurate and contextually relevant responses.
+      - <span style="color:blue">From chat_with_pdf.py line 44 and 45, retrieve relevant information chunks from all uploaded files with keywords matching (check implementation in util.py). This allows AI to gain accurate and contextually relevant responses. Improvements can be implemented with using word embeddings, but that would cost extra money with calling openAI API, or causing extra dependency headaches if using local GPT-2 model embedding weights.</span>
+      - Implement retrieval mechanisms to fetch information from the document chunks.
+      - <span style="color:blue">As described above, retrieve relevant info based on keywords matching, and format the retreived info in a text string.</span>
+    - Deliverables:
+    A fully functional chat interface integrated into your application.
+    Backend logic for processing user queries and retrieving relevant information from the documents. <span style="color:blue">Can be tested in the user interface.</span>
+
+- Support for .txt and .pdf File Formats (15 points)
+    - Description: Extend the file upload functionality to accept both .txt and .pdf files.
+    - Deliverables:
+    Updated file upload component that allows selection of .txt and .pdf files.
+    Implementation of PDF parsing to extract text content for processing.
+    - <span style="color:blue">Supports .pdf in line 10 of chat_with_pdf.py, and extract text with PyPDF2 package. The rest of the process are similar to how we handle .txt files.</span>
+- Ability to Add Multiple Documents (15 points)
+    - Description: Allow users to upload multiple documents and interact with all of them within the chat interface.
+    - Deliverables:
+    - Modified upload system to handle multiple files.
+    - Logic to manage and differentiate content from multiple documents during conversations.
+    - <span style="color:blue">Supports multiple file input in line 10 of chat_with_pdf.py. Can be tested in user interface. The logic to differentiate each file is simple, we just include the file name in the output text, see revlevant_content_formatting() function in util.py for implementation details.</span>
 ---
 
 # 📌 INFO-5940
