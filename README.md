@@ -25,6 +25,8 @@ streamlit run chat_with_pdf.py
 
 and in the chat interface, you will be able to upload multiple files in .txt and .pdf format while interacting with the bot.
 
+Note that all setup from course repo setup is assumed (https://github.com/AyhamB/INFO-5940), including but not limited to container build, creating the .env file and put in the environment variables, etc.
+
 ## Code Structure Explained
 
 So the main user interface lies in chat_with_pdf.py, which handles the stream and uploading files. It also parse the files into text content and store them in the "./data" directory. This main workhouse calls helper functions from util.py to handle the input and extract relevant informations from the uploaded files according to user questions. Because the codes are well documented, I am not going to explain it too much here.
