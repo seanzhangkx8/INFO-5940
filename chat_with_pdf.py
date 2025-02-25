@@ -5,7 +5,7 @@ from os import environ
 from util import break_into_sequences, search_relevant_sequences, revlevant_content_formatting, summarize_text
 import PyPDF2
 
-st.title("📝 File Q&A with OpenAI")
+st.title("📝 Upload File and Do Q&A with OpenAI")
 ## Accepting PDF files
 uploaded_files = st.file_uploader("Upload articles", type=("txt", "md", "pdf"), accept_multiple_files=True)
 
@@ -76,10 +76,10 @@ if question and uploaded_files:
     st.session_state.messages.append({"role": "assistant", "content": response})
 
 
-# Clear the data directory
-if os.path.exists(data_dir):
-    for file_name in os.listdir(data_dir):
-        file_path = os.path.join(data_dir, file_name)
+# Clear the data directory, if needed
+# if os.path.exists(data_dir):
+#     for file_name in os.listdir(data_dir):
+#         file_path = os.path.join(data_dir, file_name)
     
-        if os.path.isfile(file_path):
-            os.remove(file_path)
+#         if os.path.isfile(file_path):
+#             os.remove(file_path)
