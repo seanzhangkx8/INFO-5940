@@ -2,9 +2,9 @@ import streamlit as st
 from openai import OpenAI
 from os import environ
 
-environ["OPENAI_API_KEY"] = "sk-fdjJJUSK0Xuz0j1Xexm5WQ"
-environ["OPENAI_BASE_URL"] = "https://api.ai.it.cornell.edu/"
-environ["TZ"] = "America/New_York"
+# environ["OPENAI_API_KEY"] = "sk-fdjJJUSK0Xuz0j1Xexm5WQ"
+# environ["OPENAI_BASE_URL"] = "https://api.ai.it.cornell.edu/"
+# environ["TZ"] = "America/New_York"
 
 st.title("📝 File Q&A with OpenAI")
 uploaded_files = st.file_uploader("Upload articles", type=("txt", "md", "pdf"), accept_multiple_files=True)
