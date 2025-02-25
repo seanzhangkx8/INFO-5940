@@ -74,6 +74,13 @@ All Requirements (Total 200 points):
     - <span style="color:blue">Supports multiple file input in line 10 of chat_with_pdf.py. Can be tested in user interface. The logic to differentiate each file is simple, we just include the file name in the output text, see revlevant_content_formatting() function in util.py for implementation details.</span>
 ---
 
+
+
+GAP ---- EVERYTHING BELOW ARE INSTRUCTION FROM INFO5940 TO RUN THE OG REPO
+
+
+
+---
 # 📌 INFO-5940
 
 Welcome to the **INFO-5940** repository! This guide will help you set up the development environment using **Docker** in **VS Code**, configure the **OpenAI API key**, manage Git branches, and run Jupyter notebooks for assignments.  
