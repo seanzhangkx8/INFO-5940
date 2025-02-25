@@ -1,3 +1,23 @@
+# INFO-5940 HW1
+This repo is for INFO5940 HW1, by Sean Zhang (kz88)
+
+## Setup Instruction
+
+1. The provided poetry.lock does not work as intended, so we need to re-build the poetry.lock manully sometimes.
+
+```
+rm poetry.lock
+poetry lock --no-update
+```
+
+build the container again:
+
+```
+docker-compose up --build
+```
+
+
+
 ---
 
 # 📌 INFO-5940

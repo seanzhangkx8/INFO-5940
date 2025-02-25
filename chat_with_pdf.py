@@ -1,39 +1,49 @@
 import streamlit as st
 from openai import OpenAI
+import os
 from os import environ
-
-# environ["OPENAI_API_KEY"] = "sk-fdjJJUSK0Xuz0j1Xexm5WQ"
-# environ["OPENAI_BASE_URL"] = "https://api.ai.it.cornell.edu/"
-# environ["TZ"] = "America/New_York"
+from util import break_into_sequences, search_relevant_sequences
 
 st.title("📝 File Q&A with OpenAI")
-uploaded_files = st.file_uploader("Upload articles", type=("txt", "md", "pdf"), accept_multiple_files=True)
+uploaded_files = st.file_uploader("Upload articles", type=("txt", "md"), accept_multiple_files=True)
+### Accepting PDF files
+# uploaded_files = st.file_uploader("Upload articles", type=("txt", "md", "pdf"), accept_multiple_files=True)
 
-# for uploaded_file in uploaded_files:
-#     bytes_data = uploaded_file.read()
-    # st.write("filename:", uploaded_file.name)
-    # st.write(bytes_data)
+# Read the content of the uploaded file
+data_dir = "data"
+os.makedirs(data_dir, exist_ok=True)
+file_contents = {}
+if uploaded_files:
+    for uploaded_file in uploaded_files:
+        file_content = uploaded_file.read().decode("utf-8")
+        file_name = uploaded_file.name
+        # write file to data directory for RAG
+        file_path = os.path.join(data_dir, file_name)
+        with open(file_path, "w") as file:
+            file.write(file_content)
+
+if uploaded_files:
+    background_info  = break_into_sequences(data_dir=data_dir)
 
 question = st.chat_input(
-    "Ask something about the article",
+    "Ask something about the articles you uploaded!",
     disabled=not uploaded_files,
 )
 
+if question and uploaded_files:
+    ### Search for relevant information in the uploaded articles against the question
+    relevant_info = search_relevant_sequences(question, background_info)
+    print(question)
+    print(background_info)
+    print(relevant_info)
+
 if "messages" not in st.session_state:
-    st.session_state["messages"] = [{"role": "assistant", "content": "Ask something about the article"}]
+    st.session_state["messages"] = [{"role": "assistant", "content": "Ask something about the articles you upload!"}]
 
 for msg in st.session_state.messages:
     st.chat_message(msg["role"]).write(msg["content"])
 
-file_contents = ""
 if question and uploaded_files:
-    # Read the content of the uploaded file
-    for uploaded_file in uploaded_files:
-        file_content = uploaded_file.read().decode("utf-8")
-        file_name = uploaded_file.name
-        file_content += f"File: {file_name}\n{file_content}\n\n"
-        file_contents += file_content
-    print(file_contents)
 
     client = OpenAI(api_key=environ['OPENAI_API_KEY'])
 
